@@ -3,7 +3,7 @@
 
 A Gradio app where people report lost and found items and get a ranked list of possible matches for a human to review. It combines a 12-category image classifier, appearance features, and text similarity. The app suggests candidates and never decides ownership.
 
-Course project at SRM Institute of Science and Technology (Delhi-NCR). First author: Shrestha Chatterjee, who wrote all the code and ran all the experiments. The full write-up is in [`report.pdf`](report.pdf).
+Course project at SRM Institute of Science and Technology (Delhi-NCR). First author: Shrestha Chatterjee, who wrote all the code and ran all the experiments. The full write-up is in ['`](report.pdf).
 
 ## The problem
 
