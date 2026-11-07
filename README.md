@@ -1,15 +1,30 @@
-# Lost-and-Found
-# Lost and Found: AI-Assisted Lost-Item Reporting and Potential-Match Discovery
+<p align="center"><img src="assets/banner.png" alt="Lost and Found" width="100%"></p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white">
+  <img src="https://img.shields.io/badge/Gradio-app-F97316">
+  <img src="https://img.shields.io/badge/scikit--learn-TF--IDF-F7931E?logo=scikitlearn&logoColor=white">
+  <img src="https://img.shields.io/badge/Google%20Colab-notebook-F9AB00?logo=googlecolab&logoColor=white">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Ensemble%20test%20accuracy-71.93%25-0b7a75">
+  <img src="https://img.shields.io/badge/Categories-12-2b59c3">
+  <img src="https://img.shields.io/badge/Models-trained%20from%20scratch-8957e5">
+</p>
+
+# 🧳 Lost and Found: AI-Assisted Lost-Item Reporting and Potential-Match Discovery
 
 A Gradio app where people report lost and found items and get a ranked list of possible matches for a human to review. It combines a 12-category image classifier, appearance features, and text similarity. The app suggests candidates and never decides ownership.
 
-Course project at SRM Institute of Science and Technology (Delhi-NCR). First author: Shrestha Chatterjee, who wrote all the code and ran all the experiments. The full write-up is in ['`](report.pdf).
+Course project at SRM Institute of Science and Technology (Delhi-NCR). First author: Shrestha Chatterjee, who wrote all the code and ran all the experiments. The full write-up is in [`report.pdf`](report.pdf).
 
-## The problem
+## 🎯 The problem
 
 Searching lost-and-found reports by hand does not scale, and two people describe the same object in different words. An image classifier that predicts only "mug" or "bicycle" cannot show that two reports are the same physical item. This project combines image and text evidence to narrow the search and rank candidates.
 
-## What the app does
+## 📱 What the app does
 
 | Tab | Purpose |
 |---|---|
@@ -20,7 +35,7 @@ Searching lost-and-found reports by hand does not scale, and two people describe
 
 Reports are saved to a CSV file, with images stored in a Google Drive folder. This is demo-grade storage with no authentication.
 
-## How it works
+## ⚙️ How it works
 
 1. **Classify** the image into one of 12 categories with an ensemble of CNNs trained from scratch.
 2. **Describe** the image with appearance features: ResNet34 deep features (768 values), a 64-bin colour histogram and a coarse 12 x 12 colour layout, combined with weights 0.5, 0.3 and 0.2.
@@ -28,7 +43,9 @@ Reports are saved to a CSV file, with images stored in a Google Drive folder. Th
 4. **Fuse** the image and text signals with a default weighting of **0.6 image, 0.4 text**.
 5. **Rank** candidate reports for a person to review.
 
-## Image classifier
+<p align="center"><img src="assets/architecture.png" width="80%" alt="System architecture"></p>
+
+## 🖼️ Image classifier
 
 **Data.** [Stanford Online Products](https://www.kaggle.com/datasets/ryanholbrook/stanford-online-products) (Kaggle TFRecords), grouped into 12 super-classes: bicycle, cabinet, chair, coffee maker, fan, kettle, lamp, mug, sofa, stapler, table and toaster.
 
@@ -51,7 +68,7 @@ Reports are saved to a CSV file, with images stored in a Google Drive folder. Th
 | Regularisation | Rotation, zoom, shift, flip, brightness and contrast augmentation | Same, plus CutMix (p = 0.6) and EMA of weights (decay 0.998) |
 | Evaluation | Flip test-time augmentation, softmax-average ensemble | Flip test-time augmentation, softmax-average ensemble |
 
-## Results
+## 📊 Results
 
 Test accuracy on the 60,502-image test split (12 classes, so chance is about 8%):
 
@@ -65,6 +82,8 @@ Test accuracy on the 60,502-image test split (12 classes, so chance is about 8%)
 
 - Run 2 improved every model by roughly three to four points. The ensemble gained 2.80 points and beat the best single model (ResNet34) by 1.66 points.
 - Resolution, training length, CutMix and EMA were changed together, so the gain is not attributed to any one of them.
+
+<p align="center"><img src="assets/accuracy_by_model.png" width="80%" alt="Test accuracy by model"></p>
 
 Per-class results of the final ensemble (test split):
 
@@ -82,7 +101,9 @@ Per-class results of the final ensemble (test split):
 
 The remaining classes and the averages are in the notebook's classification report. Bicycle and mug are recognised most reliably. The main confusions are between visually similar furniture classes (cabinet, chair, table, sofa).
 
-## Example outputs
+<p align="center"><img src="assets/per_class_f1.png" width="80%" alt="Per-class F1"></p>
+
+## ✨ Example outputs
 
 These show behaviour in the app and are not measured performance.
 
@@ -90,7 +111,7 @@ These show behaviour in the app and are not measured performance.
 - **Nearest neighbours:** for one query, the six nearest images by appearance were all bicycle parts (similarity 0.81 to 0.88).
 - **Report workflow:** a lost pink water bottle was saved with the category "kettle" and no match. When the same bottle was entered as found (kettle, 35%), the app flagged one possible match for review. The wrong category shows that predictions can be imperfect.
 
-## Limitations
+## 🚧 Limitations
 
 - **Matching is not quantitatively evaluated.** No labelled pairs of real lost and found reports exist, so ranking quality is not measured. The 71.93% is category classification accuracy, not matching accuracy.
 - **The text model uses synthetic descriptions**, so no text accuracy is claimed.
@@ -98,25 +119,25 @@ These show behaviour in the app and are not measured performance.
 - Single run per model, no ablations, small 112 x 112 inputs and only 12 broad categories.
 - Product photos differ from phone photos of real lost items.
 
-## Future work
+## 🔭 Future work
 
 - Collect a consent-based set of real lost-and-found photos and descriptions, and measure matching directly (for example top-k recall over known pairs).
 - Run ablations for resolution, training length, CutMix and EMA, and repeat with several seeds.
 - Compare with pre-trained backbones and with metric-learning or image-text embeddings.
 - Add location and time to the ranking, plus authentication and privacy controls.
 
-## Run it
+## ▶️ Run it
 
 1. Open `lost_and_found.ipynb` in Google Colab with a GPU runtime.
 2. Run the data and training cells in order. The dataset downloads through `kagglehub`, and the first load takes a few minutes.
 3. The app saves reports to Google Drive (`/content/drive/MyDrive/LostAndFoundUploads`). Change the path if needed.
 4. Run the final app cell and open the Gradio link it prints.
 
-## Files
+## 📁 Files
 
-- `lost_and_found.ipynb`: data loading, training, evaluation and the Gradio app
-- `report.pdf`: full project report
+- [`lost_and_found.ipynb`](lost_and_found.ipynb): data loading, training, evaluation and the Gradio app
+- [`report.pdf`](report.pdf): full project report
 
-## Authors
+## 👩‍💻 Authors
 
 Shrestha Chatterjee (first author) and team. All code and experiments: Shrestha Chatterjee.
